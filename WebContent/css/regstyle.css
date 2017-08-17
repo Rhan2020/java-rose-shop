@@ -1,0 +1,13 @@
+.top{width: 100%;height: 30px;background: #f2f2f2;position: fixed;top: 0px;}
+.top a{line-height: 30px;float: right;margin-right: 20px}
+.top a:hover {font-weight: bold;}
+.container{display: block;width: 100%;height: 673px;background: url(../img/loginbg.jpg) no-repeat scroll center center rgba(0, 0, 0, 0);}
+.register{background: #fafafa;width: 400px;text-align: center;height: 410px;position: absolute;left: 60%;top: 20%;padding-top: 40px;}
+.text_p{margin-top: 45px;}
+.register_nav{position: relative;margin: 0 auto;margin-bottom: 15px;}
+.register_text{width: 290px;text-indent: 5px;border: solid 1px #b3b3b3;display: table-cell;font-size: 14px;height: 36px;}
+.signin_button{background: rgb(198,198,198);display: inline-block;height: 40px;width: 200px;text-align: center;line-height: 40px;margin: 20px;}
+.signin_tit{font-family: '微软雅黑', 'Microsoft YaHei';}
+.signin_a{font-size: 14px;float:right;padding-right: 70px;margin-top: -20px;}
+footer{width: 100%;height: 40px;background: rgb(65,65,65);position: fixed;bottom: 0px;}
+footer p{color: white;display: inline-block;position: relative;left: 45%;font-family: "微软雅黑";top: 30%;}

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Rose</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="./css/reset.css">
+	<link rel="stylesheet" type="text/css" href="./css/style.css">
+	<link rel="stylesheet" type="text/css" href="./css/cart.css">
+	<script type="text/javascript" src="js/jquery.js"></script>
+</head>
+<body>
+	<div class="top">
+		<a href="index.html">首页</a>
+		<a href="user.html">个人中心</a>
+		<a href="dingdan.html">我的订单</a>
+		<a href="cart.html">购物车</a>
+		<a class="top_right1" id="s1" href="reg.html">注册</a>
+		<a class="top_right2" id="s2" href="login.html">登陆</a>
+		<a class="top_right1" id="s3" href="user.html">欢迎您！</a>
+	</div>
+	<header></header>
+		<div class="container">
+		<div>
+			<div class="nav-container">
+				<div class="main_view_line2"></div>
+			</div>
+		</div>
+		<div class="order" id="efg">
+			<div class="shopping">
+				<div class="shop-a">
+					<div class="shop-left" style="width:800px">我的购物车
+					</div>
+					<a href="javascript:void(0);" class="shop-right" id="cart_del_all">清空购物车</a>
+				</div>
+				<table class="shopping_cart" border="0" cellspacing="0" cellpadding="0" data-shopid="0">
+					<tbody id="showc"><tr class="shopping_cart_title">
+						<td width="110">序号</td>
+						<td width="110">品牌</td>
+						<td width="420">商品名称</td>
+						<td width="120">单价</td>
+						<td width="13"></td>
+						<td width="60">数量</td>
+						<td width="13"></td>
+						<td>操作</td>
+					</tr>
+					
+					</tbody></table>
+				<div class="cart_total">合计：￥<font id="cart_total"></font>
+				  <input type="button" class="cart_button1" value="提交订单" id="cart_pay">
+				</div>
+					
+			</div>
+			<div class="clear"></div>
+		</div>
+		<div class="main_view_line2"></div>
+	</div>
+	<footer>
+		<p>www.lovesuhong.cn</p>
+	</footer>
+	<script type="text/javascript">
+	var user=sessionStorage.getItem("username");
+	if(user){
+		document.getElementById("s1").hidden="true";
+		document.getElementById("s2").hidden="true";
+		document.getElementById("s3").innerHTML+=user;
+	}else{
+		document.getElementById("s3").style.display="none";
+	}
+	
+	function countTotal(){
+		var tu=0;
+		var inu=document.getElementsByClassName("shopping_cart_sl");
+		var ipr=document.getElementsByClassName("td_price_2079");
+		
+		for(var b=0;b<inu.length;b++){
+			var p=ipr[b].innerHTML;
+			tu+=parseInt(inu[b].value)*parseInt(ipr[b].innerHTML)
+		}
+		
+		document.getElementById("cart_total").innerHTML=tu;
+	}
+	
+	$.post('do/showCart',{'uid':sessionStorage.getItem('uid')},function(data){
+		var st="";
+		var tu=0;
+		for (var i = 0; i <data[0].length; i++) {
+			st+='<tr height="120" id="cart_tr_2079'+i+'" data-id="2079'+i+'"><td>'+(i+1)+'</td><td>'+data[i+1][0].iname+'</td><td><img src="'+data[i+1][0].img+'" class="shopping_cart_img" alt="产品图" style="cursor:pointer;"><div class="shopping_cart_name">'+data[i+1][0].imessages+'</div></td><td class="td_price_2079">'+data[i+1][0].iprice+'</td><td><a href="javascript:void(0)" class="cart_down"><img border="0" class="jia_jian addite" id="mu'+data[i+1][0].sid+'" alt="" src="img/cart02.png"></a></td><td><input type="text" value="'+data[0][i]+'" id="count'+data[i+1][0].sid+'" class="shopping_cart_sl"></td><td align="right"><a href="javascript:void(0);" class="cart_up"><img border="0" class="jia_jian muite" id="ad'+data[i+1][0].sid+'" alt="" src="img/cart03.png"></a></td><td><a href="javascript:void(0)" class="cart_del" id="del'+data[i+1][0].sid+'">删除</a></td></tr>'
+			tu+=parseInt(data[i+1][0].iprice)*parseInt(data[0][i])
+		}
+		document.getElementById("showc").innerHTML+=st;
+		document.getElementById("cart_total").innerHTML=tu;
+		var a1=$(".addite")
+		var a2=$(".muite")
+		var a3=$(".cart_del")
+		for (var j = 0; j < a1.length;j++) {
+			a1[j].onclick=function () {
+				var t=this.id.substring(2,this.id.length)
+				var n=document.getElementById("count"+t)
+				var nc=n.value;
+				if(nc>1){
+					nc--;
+					n.value=nc;
+					$.post('do/tocart',{'uid':sessionStorage.getItem('uid'),'sid':t,'count':1},function(data){
+						
+					},'json');
+					countTotal()
+				}
+			}
+			a2[j].onclick=function () {
+				var t=this.id.substring(2,this.id.length)
+				var n=document.getElementById("count"+t)
+				var nc=n.value;
+				if(nc>=1){
+					nc++;
+					n.value=nc;
+					$.post('do/tocart2',{'uid':sessionStorage.getItem('uid'),'sid':t,'count':1},function(data){
+						
+					},'json');
+					countTotal()
+				}
+			}
+			a3[j].onclick=function () {
+				var t=this.id.substring(3,this.id.length)
+				if(confirm("是否移出购物车？")){
+					$.post('do/tocart3',{'uid':sessionStorage.getItem('uid'),'sid':t,'count':0},function(data){
+						
+					},'json');
+					setTimeout("location.href='cart.html'",1000)
+				}
+			}
+		}
+		
+		document.getElementById("cart_pay").onclick=function () {
+			if(confirm("是否提交订单？")){
+				var od="";
+				var inu=document.getElementsByClassName("shopping_cart_sl");
+				for(var b=0;b<inu.length;b++){
+					od+=inu[b].id.substring(5,inu[b].id.length)+'~'+inu[b].value+'@'
+				}
+				$.post('do/addOrder',{'uid':sessionStorage.getItem('uid'),'ordermes':od},function(data){
+					
+				},'json');
+				setTimeout("location.href='dingdan.html'",1000)
+			}
+		}
+		document.getElementById("cart_del_all").onclick=function () {
+			if(confirm("是否清空购物车？")){
+				$.post('do/delCart',{'uid':sessionStorage.getItem('uid')},function(data){
+					
+				},'json');
+				setTimeout("location.href='cart.html'",1000)
+			}
+		}
+	},'json');
+	
+	
+
+	</script>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Rose</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="./css/reset.css">
+	<link rel="stylesheet" type="text/css" href="./css/style.css">
+	<link rel="stylesheet" type="text/css" href="./css/cart.css">
+	<script type="text/javascript" src="js/jquery.js"></script>
+</head>
+<body>
+	<div class="top">
+		<a href="index.html">首页</a>
+		<a href="user.html">个人中心</a>
+		<a href="dingdan.html">我的订单</a>
+		<a href="cart.html">购物车</a>
+		<a class="top_right1" id="s1" href="reg.html">注册</a>
+		<a class="top_right2" id="s2" href="login.html">登陆</a>
+		<a class="top_right1" id="s3" href="user.html">欢迎您！</a>
+	</div>
+	<header></header>
+		<div class="container" >
+		<div>
+			<div class="nav-container">
+				<div class="main_view_line2"></div>
+			</div>
+		</div>
+		<div class="order" id="efg">
+			<div class="shopping">
+				<div class="shop-a">
+					<div class="shop-left" style="width:800px">我的订单
+					</div>
+				</div>
+				<table class="shopping_cart" border="0" cellspacing="0" cellpadding="0" data-shopid="0">
+					<tbody id="showOrderTB">
+					
+					</tbody></table>
+			</div>
+			<div class="clear"></div>
+		</div>
+
+		<div class="main_view_line2" style="height: 100px;width: 100px;"></div>
+	</div>
+	<footer>
+		<p>www.lovesuhong.cn</p>
+	</footer>
+	<script type="text/javascript">
+	var user=sessionStorage.getItem("username");
+	if(user){
+		document.getElementById("s1").hidden="true";
+		document.getElementById("s2").hidden="true";
+		document.getElementById("s3").innerHTML+=user;
+	}else{
+		document.getElementById("s3").style.display="none";
+	}
+	
+	$.post('do/showOrder',{'uid':sessionStorage.getItem('uid')},function(data){
+		console.log(data)
+		var st="";
+		for (var i = 0; i <data.length; i++) {
+			for(var j=0;j<data[i].length;j++){
+				var s1=data[i][j].split(',')
+				var img1=s1[0].substring(s1[0].indexOf('img:')+4,s1[0].length)
+				var imes=s1[1].substring(s1[1].indexOf('imessages:')+10,s1[1].length)
+				var ipr=s1[2].substring(s1[2].indexOf('iprice:')+7,s1[2].length)
+				var ssid=s1[3].substring(s1[3].indexOf('sid:')+4,s1[3].length)
+				var ina=s1[4].substring(s1[4].indexOf('iname:')+6,s1[4].length)
+				var inu=s1[5]
+				var orderid=s1[6]
+				
+				if(j==data[i].length-1){
+					st+='<tr height="120" id="cart_tr_2079" data-id="2079" style="border-bottom:1px solid black;"><td>订单编号'+orderid+'</td><td>'+ina+'</td><td><img src="'+img1+'"class="shopping_cart_img" alt="产品图" style="cursor:pointer;"><div class="shopping_cart_name">'+imes+'</div></td><td><a href="javascript:void(0)" >'+inu+'件 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</a></td><td><a href="javascript:void(0)" id="del'+orderid+'" class="cart_del">删除</a></td></tr>'
+				}else{
+					st+='<tr height="120" id="cart_tr_2079" data-id="2079"><td>订单编号'+orderid+'</td><td>'+ina+'</td><td><img src="'+img1+'"class="shopping_cart_img" alt="产品图" style="cursor:pointer;"><div class="shopping_cart_name">'+imes+'</div></td><td><a href="javascript:void(0)" >'+inu+'件 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</a></td><td><a href="javascript:void(0)" id="del'+orderid+'" class="cart_del">删除</a></td></tr>'
+				}
+			}
+		} 
+		
+		document.getElementById("showOrderTB").innerHTML=st;
+		var sq=document.getElementsByClassName("cart_del")
+		for(var y=0;y<sq.length;y++){
+			sq[y].onclick=function () {
+				if(confirm("是否删除该订单？")){
+					$.post('do/delorder',{'orderid':this.id.substring(3,this.id.length)},function(data){
+						
+					},'json');
+					setTimeout("location.href='dingdan.html'",1000)
+				}
+			}
+		}
+		
+	},'json');
+	</script>
+</body>
+</html>

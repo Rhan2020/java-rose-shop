@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Rose</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="./css/reset.css">
+	<link rel="stylesheet" type="text/css" href="./css/style.css">
+	<link rel="stylesheet" type="text/css" href="./css/more.css">
+	<script type="text/javascript" src="js/jquery.js"></script>
+</head>
+<body>
+	<div class="top">
+		<a href="index.html">首页</a>
+		<a href="user.html">个人中心</a>
+		<a href="dingdan.html">我的订单</a>
+		<a href="cart.html">购物车</a>
+		<a class="top_right1" id="s1" href="reg.html">注册</a>
+		<a class="top_right2" id="s2" href="login.html">登陆</a>
+		<a class="top_right1" id="s3" href="user.html">欢迎您！</a>
+	</div>
+	<header></header>
+	<div class="container">
+		<div class="item_img">
+			<img src="" id="itemimg">
+		</div>
+		<div class="additem">
+			<div class="details_num1_right" id="itemid">
+				<div class="right_tit" id="itemname"></div>
+				<div class="right_xx" id="itemmes"></div>
+				<br>
+				<div class="right_pay" id="itempri"></div>
+				<br>
+				<div class="right_select">
+					<span class="right_font_tit">购买数量：</span>
+					<a href="javascript:void(0);" class="right_down">
+					<img id="muit" border="0" alt="减" src="http://www.roseonly.com.cn/assets/roseonly/images/icon_down.png"></a>
+					
+					<a href="javascript:void(0);" class="right_up"><b id="itnum">1</b>
+					<img id="addit" border="0" alt="加" src="http://www.roseonly.com.cn/assets/roseonly/images/icon_up.png"></a>
+					<div class="clear"></div>
+				</div>
+				<a href="javascript:tobuy();" class="button_bar1 unsold" name="for99clickToBuy">立即购买</a>
+				<a href="javascript:tocart();" class="button_bar2 unsold" name="for99clickToCar">加入购物车</a>
+				<a href="javascript:;" class="button_bar1" id="soldText" style="display: none;"></a>
+				<div class="clear"></div>
+			</div>
+		</div>
+	</div>
+	<footer>
+		<p>www.lovesuhong.cn</p>
+	</footer>
+	<script type="text/javascript">
+	var user=sessionStorage.getItem("username");
+	if(user){
+		document.getElementById("s1").hidden="true";
+		document.getElementById("s2").hidden="true";
+		document.getElementById("s3").innerHTML+=user;
+	}else{
+		document.getElementById("s3").style.display="none";
+	}
+	var ci=sessionStorage.getItem('citu')
+	ci=ci.split("~")
+	document.getElementById("itemid").cc=ci[0];
+	document.getElementById("itemimg").src=ci[1];
+	$("#itemname").html(ci[2]);
+	$("#itemmes").html(ci[3]);
+	$("#itempri").html(ci[4]);
+	var m=$("#itnum").html();
+	var n=parseInt(m);
+	document.getElementById("muit").onclick=function(){
+		if(n>1){
+			n--;
+			$("#itnum").html(n);
+		}
+	}
+	document.getElementById("addit").onclick=function(){
+		n++;
+		$("#itnum").html(n);
+	}
+	function makecart(){
+		var nu=parseInt($("#itnum").html());
+		$.post('do/tocart2',{'uid':sessionStorage.getItem('uid'),'sid':ci[0],'count':nu},function(data){
+			
+		},'json');
+	}
+	function tobuy(){
+		if(!user){
+			alert("抱歉，请您先登陆！");
+			return;
+		}
+		makecart();
+		location.href="cart.html";
+	}
+	function tocart(){
+		if(!user){
+			alert("抱歉，请您先登陆！");
+			return;
+		}
+		makecart();
+		alert("加入购物车成功！");
+	}
+	</script>
+</body>
+</html>

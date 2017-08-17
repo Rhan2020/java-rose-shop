@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="User">
+	<insert id="insert" parameterType="hashmap" keyProperty="string">
+		insert
+		into user
+		(
+			uid
+			,uname
+			,psd
+		)
+		values
+		(
+			#{uid}
+			,#{uname}
+			,#{psd}
+		)
+	</insert>
+
+	<delete id="delete" parameterType="hashmap">
+		delete from user
+		where
+		uid = #{uid}
+	</delete>
+
+	<update id="update" parameterType="hashmap">
+		update user
+		<set>
+				<if test=" address != null ">
+					address = #{address}
+				</if>
+		</set>
+		where uid = #{uid}
+	</update>
+	<update id="update2" parameterType="hashmap">
+		update user
+		<set>
+				<if test=" cart_item != null ">
+					cart_item = #{cart_item}
+				</if>
+		</set>
+		where uid = #{uid}
+	</update>
+	<update id="update7" parameterType="hashmap">
+		update user
+		<set>
+				<if test=" psd != null ">
+					psd = #{psd}
+				</if>
+		</set>
+		where uid = #{uid}
+	</update>
+
+	<select id="select_all" resultType="hashmap">
+		select 
+				*
+		from user 
+	</select>
+
+	<select id="select_count" parameterType="hashmap" resultType="int">
+		select count(id) as c from dic_edu
+		<where>
+				<if test=" id != null and id !='' ">
+					and id = #{id}
+				</if>
+				<if test=" name != null and name !='' ">
+					and name = #{name}
+				</if>
+				<if test=" sort != null and sort !='' ">
+					and sort = #{sort}
+				</if>
+		</where>
+	</select>
+	
+	<select id="select_name" parameterType="hashmap" resultType="hashmap">
+		select * from user
+		<where>
+				<if test=" uname != null and uname !='' ">
+					and uname = #{uname}
+				</if>
+		</where>
+	</select>
+	
+	<select id="select_cart" parameterType="hashmap" resultType="hashmap">
+		select cart_item from user
+		<where>
+				<if test=" uid != null and uid !='' ">
+					and uid = #{uid}
+				</if>
+		</where>
+	</select>
+	
+	<select id="select_status" parameterType="hashmap" resultType="hashmap">
+		select * from user
+		<where>
+				<if test=" status != null and status !='' ">
+					and status = #{status}
+				</if>
+		</where>
+	</select>
+	
+	<select id="select_one" parameterType="String" resultType="pd">
+		 select * from user
+		 <where>
+		 		<if test=" _parameter != null and _parameter != '' ">
+					  and uid = #{_parameter}
+				</if>				
+		 </where>	
+	</select>
+	
+	
+	<select id="select_id" parameterType="hashmap" resultType="hashmap">
+		select address from user
+		where
+		uid = #{uid}
+	</select>
+	<select id="select_idpsd" parameterType="hashmap" resultType="hashmap">
+		select psd from user
+		where
+		uid = #{uid}
+	</select>
+</mapper>

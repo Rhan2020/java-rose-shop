@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Rose</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="./css/reset.css">
+	<link rel="stylesheet" type="text/css" href="./css/style.css">
+	<link rel="stylesheet" type="text/css" href="./css/cart.css">
+	<script src="js/jquery.js"></script>
+	<style type="text/css">
+		.usermess{width: 960px;height: 400px;position: absolute;}
+		.userform{width: 500px;height: 400px;margin: 0 auto;position: relative;top: 50px;}
+		input{margin-top: 30px;width: 300px;height: 30px;padding: 5px;}
+		label{font-size: 18px;font-family: "微软雅黑";}
+		.savebtn{width: 150px; height: 40px;border:0px;position: relative;left: 35%;top: 10%;cursor: pointer;background: rgb(65,65,65);color: white;font-size: 18px;font-family: "微软雅黑";text-align: center;line-height: 40px;}
+		#ccc{position: absolute;left:0;top:0;border:0px;text-align: center;line-height: 40px;}
+		#ccc1{width: 150px; height: 40px;display:inline-block;position: relative;left: 35%;top: 10%;border:0px;text-align: center;line-height: 40px;}
+	</style>
+</head>
+<body>
+	<div class="top">
+		<a href="index.html">首页</a>
+		<a href="user.html">个人中心</a>
+		<a href="dingdan.html">我的订单</a>
+		<a href="cart.html">购物车</a>
+		<a class="top_right1" id="s1" href="reg.html">注册</a>
+		<a class="top_right2" id="s2" href="login.html">登陆</a>
+		<a class="top_right1" id="s3" href="user.html">欢迎您！</a>
+	</div>
+	<header></header>
+		<div class="container">
+		<div>
+			<div class="nav-container">
+				<div class="main_view_line2"></div>
+			</div>
+		</div>
+		<div class="order" id="efg">
+			<div class="shopping">
+				<div class="shop-a">
+					<div class="shop-left" style="width:800px">个人中心
+					</div>
+				</div>
+				<div class="usermess">
+					<a class="savebtn" id="ccc" href="user.html">修改地址</a>
+					<form class="userform" action="do/chan">
+						<label>原始密码：</label><input type="password" name="addr" id="opsd" value=""><br/>
+						<label>新密码：</label><input type="password" name="addr" id="pd" value=""><br/>
+						<label>重复新密码：</label><input type="password" name="addr" id="npsd" value=""><br/>
+						<a class="savebtn" id="ccc1">保存</a>
+					</form>
+				</div>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<div class="main_view_line2"></div>
+	</div>
+	<footer>
+		<p>www.lovesuhong.cn</p>
+	</footer>
+	<script type="text/javascript">
+	var user=sessionStorage.getItem("username");
+	if(user){
+		document.getElementById("s1").hidden="true";
+		document.getElementById("s2").hidden="true";
+		document.getElementById("s3").innerHTML+=user;
+	}else{
+		document.getElementById("s3").style.display="none";
+	}
+		
+	var uid=sessionStorage.getItem('uid');
+	var opsd=document.getElementById("opsd");
+	var npsd=document.getElementById("npsd");
+	var pd=document.getElementById("pd");
+	document.getElementById("ccc1").onclick=function(){
+		
+		$.ajax({
+		    url: "do/changepsd",  
+		    dataType: "json",   
+		    data: {'uid':sessionStorage.getItem('uid'),'opsd':opsd.value,'npsd':npsd.value},    
+		    type: "POST",
+		    success: function(data) {
+		    	alert(data.success)
+		    	opsd.value=""
+		    	npsd.value=""
+		    	pd.value=""
+		    },
+		    error: function(ss) {
+		        
+		    }
+		});
+	}
+	</script>
+</body>
+</html>

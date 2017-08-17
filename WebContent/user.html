@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Rose</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="./css/reset.css">
+	<link rel="stylesheet" type="text/css" href="./css/style.css">
+	<link rel="stylesheet" type="text/css" href="./css/cart.css">
+	<script src="js/jquery.js"></script>
+	<style type="text/css">
+		.usermess{width: 960px;height: 400px;position: absolute;}
+		.userform{width: 500px;height: 400px;margin: 0 auto;position: relative;top: 80px;}
+		input{margin-top: 30px;width: 300px;height: 30px;padding: 5px;}
+		label{font-size: 18px;font-family: "微软雅黑";}
+		.savebtn{width: 150px; height: 40px;border:0px;position: relative;left: 35%;top: 15%;cursor: pointer;background: rgb(65,65,65);color: white;font-size: 18px;font-family: "微软雅黑";}
+		#ccc{position: absolute;left:0;top:0;border:0px;text-align: center;line-height: 40px;}
+	</style>
+</head>
+<body>
+	<div class="top">
+		<a href="index.html">首页</a>
+		<a href="user.html">个人中心</a>
+		<a href="dingdan.html">我的订单</a>
+		<a href="cart.html">购物车</a>
+		<a class="top_right1" id="s1" href="reg.html">注册</a>
+		<a class="top_right2" id="s2" href="login.html">登陆</a>
+		<a class="top_right1" id="s3" href="user.html">欢迎您！</a>
+	</div>
+	<header></header>
+		<div class="container">
+		<div>
+			<div class="nav-container">
+				<div class="main_view_line2"></div>
+			</div>
+		</div>
+		<div class="order" id="efg">
+			<div class="shopping">
+				<div class="shop-a">
+					<div class="shop-left" style="width:800px">个人中心
+					</div>
+				</div>
+				<div class="usermess">
+					<a class="savebtn" id="ccc" href="user2.html">修改密码</a>
+					<form class="userform" action="do/chan">
+						<label>收货地址：</label><input type="text" name="addr" id="address2" value=""><br/>
+						<input type="text" name="uid" value="" hidden="true" id="usid" >
+						<button class="savebtn" id="savebtn">保存</button>
+					</form>
+				</div>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<div class="main_view_line2"></div>
+	</div>
+	<footer>
+		<p>www.lovesuhong.cn</p>
+	</footer>
+	<script type="text/javascript">
+	var user=sessionStorage.getItem("username");
+		if(user){
+			document.getElementById("s1").hidden="true";
+			document.getElementById("s2").hidden="true";
+			document.getElementById("s3").innerHTML+=user;
+		}else{
+			document.getElementById("s3").style.display="none";
+		}
+		
+		var uid=sessionStorage.getItem('uid');
+		var addr=document.getElementById("address2");
+		var opsd=document.getElementById("opsd");
+		var npsd=document.getElementById("npsd");
+		document.getElementById("usid").value=sessionStorage.getItem('uid');
+		$.post('do/messages',{'uid':uid},function(data){
+			addr.value=data.success;
+			sessionStorage.setItem('add',data.success)
+		},
+		'json');
+	  	
+
+ 		document.getElementById("savebtn").onclick=function(){
+			$.ajax({
+				url:"do/chan",
+				type:'POST', //GET
+				dataType:'json',   
+				contentType:"application/json; charset=utf-8",
+				data:{'uid':sessionStorage.getItem('uid'),'addr':addr.value}
+			})
+			alert("保存地址成功！")
+		}
+	</script>
+</body>
+</html>

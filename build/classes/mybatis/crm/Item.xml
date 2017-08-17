@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Item">
+	<insert id="insert" parameterType="hashmap" keyProperty="string">
+		insert
+		into item
+		(
+			sid
+			,iname
+			,imessages
+			,iprice
+			,img
+		)
+		values
+		(
+			#{sid}
+			,#{iname}
+			,#{imessages}
+			,#{iprice}
+			,#{img}
+		)
+	</insert>
+
+	<delete id="delete" parameterType="hashmap">
+		delete from item
+		where
+		sid = #{sid}
+	</delete>
+
+	<update id="update" parameterType="hashmap">
+		update dic_edu
+		<set>
+				<if test=" sid != null ">
+					sid = #{sid},
+				</if>
+				<if test=" iname != null ">
+					iname = #{iname},
+				</if>
+				<if test=" sort != null ">
+					sort = #{sort},
+				</if>
+		</set>
+		where sid = #{sid}
+	</update>
+
+	<select id="select_all" resultType="hashmap">
+		select 
+				*
+		from item 
+	</select>
+
+	<select id="select_count" parameterType="hashmap" resultType="int">
+		select count(id) as c from dic_edu
+		<where>
+				<if test=" id != null and id !='' ">
+					and id = #{id}
+				</if>
+				<if test=" name != null and name !='' ">
+					and name = #{name}
+				</if>
+				<if test=" sort != null and sort !='' ">
+					and sort = #{sort}
+				</if>
+		</where>
+	</select>
+	
+	<select id="select_name" parameterType="hashmap" resultType="hashmap">
+		select sid,imessages,iname,img,iprice from item
+		<where>
+				<if test=" sid != null and sid !='' ">
+					and sid = #{sid}
+				</if>
+		</where>
+	</select>
+	
+	<select id="select_status" parameterType="hashmap" resultType="hashmap">
+		select * from item
+		<where>
+				<if test=" status != null and status !='' ">
+					and status = #{status}
+				</if>
+		</where>
+	</select>
+	
+	<select id="select_one" parameterType="String" resultType="pd">
+		 select * from item
+		 <where>
+		 		<if test=" _parameter != null and _parameter != '' ">
+					  and sid = #{_parameter}
+				</if>				
+		 </where>	
+	</select>
+	
+	
+	<select id="select_id" parameterType="hashmap" resultType="hashmap">
+		select * from item
+		<where>
+				<if test=" sid != null and id !='' ">
+					and sid = #{sid}
+				</if>
+		</where>
+	</select>
+</mapper>

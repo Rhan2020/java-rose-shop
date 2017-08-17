@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Rose</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="./css/reset.css">
+	<link rel="stylesheet" type="text/css" href="./css/style.css">
+	<script type="text/javascript" src="js/jquery.js"></script>
+	<style type="text/css">a:hover {cursor: pointer;}</style>
+</head>
+<body>
+	<div class="top">
+		<a href="index.html">首页</a>
+		<a href="user.html">个人中心</a>
+		<a href="dingdan.html">我的订单</a>
+		<a href="cart.html">购物车</a>
+		<a class="top_right1" id="s1" href="reg.html">注册</a>
+		<a class="top_right2" id="s2" href="login.html">登陆</a>
+		<a class="top_right1" id="s3" href="user.html">欢迎您！</a>
+	</div>
+	<header></header>
+	<div class="container">
+		<ul id="showUl">
+		</ul>
+	</div>
+	<br>
+	<br>
+	<footer>
+		<p>www.lovesuhong.cn</p>
+	</footer>
+	<script type="text/javascript">
+	var user=sessionStorage.getItem("username");
+	if(user){
+		document.getElementById("s1").hidden="true";
+		document.getElementById("s2").hidden="true";
+		document.getElementById("s3").innerHTML+=user;
+	}else{
+		document.getElementById("s3").style.display="none";
+	}
+	
+	$.post('do/showAll',function(data){
+		var str=document.getElementById("showUl")
+		var tem="";
+		for(var i=0;i<data.length;i++){
+			tem+="<a id='"+data[i].sid+"' class='ite'><li><img src='"+data[i].img+"' id='img"+data[i].sid+"'><p class='item_name' id='ina"+data[i].sid+"'>"+data[i].iname+"</p><p class='item_message' id='ime"+data[i].sid+"'>"+data[i].imessages+"</p><p class='item_price' id='ipr"+data[i].sid+"'>￥"+data[i].iprice+"</p></li></a>";
+		}
+		str.innerHTML=tem;
+		var ite=document.getElementsByClassName("ite");
+		for(var j=0;j<ite.length;j++){
+			ite[j].onclick=function(){
+				var itu=this.id+"~"+document.getElementById("img"+this.id).src+"~"+$("#ina"+this.id).html()+"~"+$("#ime"+this.id).html()+"~"+$("#ipr"+this.id).html();
+				sessionStorage.setItem('citu',itu);
+			 	location.href="more.html";
+			}
+		}
+	},
+	'json'); 
+	
+	</script>
+</body>
+</html>

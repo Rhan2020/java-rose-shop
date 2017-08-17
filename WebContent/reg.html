@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Rose</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="./css/reset.css">
+	<link rel="stylesheet" type="text/css" href="./css/regstyle.css">
+	<script type="text/javascript" src="js/main.js"></script>
+</head>
+<body>
+	<div class="top">
+		<a href="cart.html">购物车</a>
+		<a href="reg.html">注册</a>
+		<a href="login.html">登陆</a>
+	</div>
+	<div class="container">
+		<form>
+			<div class="register">
+                <div class="signin_tit">注册</div>
+                <div class="register_nav">
+                    <img src="http://www.roseonly.com.cn/upload/syspic_new/14682248307391179.png" style="left:12px" alt="" class="register_nav_img">
+                    <input type="text" placeholder="请输入手机号" name="username" id="username" maxlength="30" class="register_text text_p" data-form-un="1483495781051.6567">
+                    <div class="reminder validate">
+                        &nbsp;
+                    </div>
+                </div>
+                <div class="register_nav">
+                    <img src="http://www.roseonly.com.cn/upload/syspic_new/14682248238795325.png" alt="" class="register_nav_img">
+                    <input type="password" name="password" placeholder="请输入密码" id="password1" maxlength="16" class="register_text" data-form-pw="1483495781051.6567">
+                    <div class="reminder validate">
+                        &nbsp;
+                    </div>
+                </div>
+                <div class="register_nav">
+                    <img src="http://www.roseonly.com.cn/upload/syspic_new/14682248238795325.png" alt="" class="register_nav_img">
+                    <input type="password" name="password" placeholder="请重复密码" id="password" maxlength="16" class="register_text" data-form-pw="1483495781051.6567">
+                    <div class="reminder validate">
+                        &nbsp;
+                    </div>
+                </div>
+                <a href="javascript:;" id="reg-btn-submit" class="signin_button" data-form-sbm="1483495781051.6567">注册</a>
+            </div>
+		</form>
+	</div>
+	<footer>
+		<p>www.lovesuhong.cn</p>
+	</footer>
+	<script type="text/javascript">
+	var un=document.getElementById("username");
+	var psd=document.getElementById("password");
+	var psd1=document.getElementById("password1");
+	document.getElementById("reg-btn-submit").onclick=function(){
+		if(psd1.value!=psd.value){
+			alert("两次输入密码不一致！");
+			psd1.value="";
+			psd.value="";
+			return;
+		}
+		$.post('do/reg',{username:un.value,password:psd.value},function(data){
+			if(data.success=='true'){
+				sessionStorage.setItem('username',un.value);
+				sessionStorage.setItem('uid',data.uid);
+				alert("恭喜你！"+un.value+",注册成功！")
+				location.href="index.html";
+			}
+			if(data.success=='error'){
+				alert('用户名已存在！');
+				un.value="";
+				psd.value="";
+				psd1.value="";
+			}
+			if(data.success=='false'){
+				alert("注册失败！请稍后再试。。");
+				un.value="";
+				psd.value="";
+				psd1.value="";
+			}
+		},
+		'json');
+	}
+	</script>
+</body>
+</html>
